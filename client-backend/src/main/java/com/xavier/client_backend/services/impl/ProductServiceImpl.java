@@ -6,21 +6,17 @@ import com.xavier.client_backend.services.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-    }
-
-    @Override
-    public ProductEntity save(ProductEntity productEntity) {
-        return productRepository.save(productEntity);
     }
 
     @Override
@@ -28,5 +24,8 @@ public class ProductServiceImpl implements ProductService {
         return StreamSupport.stream(productRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-
+    @Override
+    public Optional<ProductEntity> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
 }
