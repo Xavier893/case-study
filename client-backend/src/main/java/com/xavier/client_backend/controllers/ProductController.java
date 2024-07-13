@@ -7,35 +7,43 @@ import com.xavier.client_backend.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/products")
 public class ProductController {
 
-    private ProductService productService;
-
-    private Mapper<ProductEntity, ProductDto> productMapper;
+    private final ProductService productService;
+    private final Mapper<ProductEntity, ProductDto> productMapper;
 
     public ProductController(ProductService productService, Mapper<ProductEntity, ProductDto> productMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
     }
 
-    @PostMapping(path = "/products")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product) {
-        ProductEntity productEntity = productMapper.mapFrom(product);
-        ProductEntity savedProductEntity = productService.save(productEntity);
-        return new ResponseEntity<>(productMapper.mapTo(savedProductEntity), HttpStatus.CREATED);
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> listProducts() {
+        List<ProductEntity> products = productService.findAll();
+        List<ProductDto> productDtos = products.stream()
+                .map(productMapper::mapTo)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(productDtos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/products")
-    public List<ProductDto> listProducts() {
-        List<ProductEntity> products = productService.findAll();
-        return products.stream().map(productMapper::mapTo).collect(Collectors.toList());
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        Optional<ProductEntity> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            ProductDto productDto = productMapper.mapTo(product.get());
+            return new ResponseEntity<>(productDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
