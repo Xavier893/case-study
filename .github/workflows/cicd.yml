@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - name: Build Project
-        run: mvn clean install -DskipTests
+        run: cd ${{ github.workspace }}/client-backend && mvn clean install -DskipTests
       - name: Upload Artifacct for deployment job
         uses: actions/upload-artifact@v2
         with:
