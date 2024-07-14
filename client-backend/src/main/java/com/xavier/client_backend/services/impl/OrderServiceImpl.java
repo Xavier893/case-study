@@ -3,11 +3,12 @@ package com.xavier.client_backend.services.impl;
 import com.xavier.client_backend.domain.entities.OrderEntity;
 import com.xavier.client_backend.repositories.OrderRepository;
 import com.xavier.client_backend.services.OrderService;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,38 +21,48 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
     }
 
+    @Async
     @Override
-    public OrderEntity save(OrderEntity orderEntity) {
-        return orderRepository.save(orderEntity);
+    public CompletableFuture<OrderEntity> save(OrderEntity orderEntity) {
+        return CompletableFuture.completedFuture(orderRepository.save(orderEntity));
     }
 
+    @Async
     @Override
-    public OrderEntity updateOrder(Long orderId, OrderEntity updatedOrder) {
-        OrderEntity existingOrder = orderRepository.findById(orderId).orElseThrow(() -> new NoSuchElementException("Order not found"));
+    public CompletableFuture<OrderEntity> updateOrder(Long orderId, OrderEntity updatedOrder) {
+        OrderEntity existingOrder = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order not found"));
 
         existingOrder.getOrderItems().clear();
         existingOrder.getOrderItems().addAll(updatedOrder.getOrderItems());
         existingOrder.setOrderDate(updatedOrder.getOrderDate());
-        return orderRepository.save(existingOrder);
+        return CompletableFuture.completedFuture(orderRepository.save(existingOrder));
     }
 
+    @Async
     @Override
-    public List<OrderEntity> findAll() {
-        return StreamSupport.stream(orderRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public CompletableFuture<List<OrderEntity>> findAll() {
+        return CompletableFuture.completedFuture(
+                StreamSupport.stream(orderRepository.findAll().spliterator(), false)
+                        .collect(Collectors.toList()));
     }
 
+    @Async
     @Override
-    public OrderEntity findById(Long id) {
-        return orderRepository.findById(id).orElse(null);
+    public CompletableFuture<OrderEntity> findById(Long id) {
+        return CompletableFuture.completedFuture(orderRepository.findById(id).orElse(null));
     }
 
+    @Async
     @Override
-    public List<OrderEntity> findByClientId(Long clientId) {
-        return orderRepository.findByClient_Id(clientId);
+    public CompletableFuture<List<OrderEntity>> findByClientId(Long clientId) {
+        return CompletableFuture.completedFuture(orderRepository.findByClient_Id(clientId));
     }
 
+    @Async
     @Override
-    public void deleteById(Long id) {
+    public CompletableFuture<Void> deleteById(Long id) {
         orderRepository.deleteById(id);
+        return CompletableFuture.completedFuture(null);
     }
 }
