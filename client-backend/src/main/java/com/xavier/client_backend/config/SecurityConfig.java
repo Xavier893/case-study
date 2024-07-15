@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**", "/api/clients/me"))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/products/**", "/", "/index.html", "/static/**",
-                            "/*.ico", "/*.json", "/*.png").permitAll();
+                            "/*.ico", "/*.json", "/*.png", "/api/clients/me").permitAll();
                     auth.requestMatchers("/api/orders/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
