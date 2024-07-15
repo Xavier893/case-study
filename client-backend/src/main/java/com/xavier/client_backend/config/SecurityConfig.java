@@ -56,7 +56,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://cpfrontend.azurewebsites.net"));
         configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
@@ -80,7 +80,7 @@ public class SecurityConfig {
             }
 
             SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-            handler.setDefaultTargetUrl("http://localhost:3000");
+            handler.setDefaultTargetUrl("https://cpfrontend.azurewebsites.net");
             handler.onAuthenticationSuccess(request, response, authentication);
         };
     }
