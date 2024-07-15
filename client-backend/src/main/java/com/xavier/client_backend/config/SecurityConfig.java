@@ -33,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults())
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**", "/api/clients/me"))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/products/**", "/", "/index.html", "/static/**",
                             "/*.ico", "/*.json", "/*.png").permitAll();
