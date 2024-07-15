@@ -13,14 +13,14 @@ const OrdersPage = () => {
 		const fetchClientAndOrders = async () => {
 			try {
 				const clientResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/api/clients/me`,
+					`https://cpbackend.azurewebsites.net/api/clients/me/api/clients/me`,
 					{ withCredentials: true }
 				);
 				if (clientResponse.status === 200) {
 					setClient(clientResponse.data);
 					setIsAuthenticated(true);
 					const ordersResponse = await axios.get(
-						`${process.env.REACT_APP_API_URL}/api/orders/client/${clientResponse.data.id}`,
+						`https://cpbackend.azurewebsites.net/api/clients/me/api/orders/client/${clientResponse.data.id}`,
 						{ withCredentials: true }
 					);
 					const ordersWithProducts = await Promise.all(
@@ -28,7 +28,7 @@ const OrdersPage = () => {
 							const orderItemsWithDetails = await Promise.all(
 								order.orderItems.map(async (item, index) => {
 									const productResponse = await axios.get(
-										`${process.env.REACT_APP_API_URL}/api/products/${item.productId}`
+										`https://cpbackend.azurewebsites.net/api/clients/me/api/products/${item.productId}`
 									);
 									return {
 										...item,
@@ -96,7 +96,7 @@ const OrdersPage = () => {
 				orderItems: updatedOrder.orderItems.map(({ tempId, ...item }) => item), // Remove tempId before sending
 			};
 			await axios.put(
-				`${process.env.REACT_APP_API_URL}/api/orders/${orderId}`,
+				`https://cpbackend.azurewebsites.net/api/clients/me/api/orders/${orderId}`,
 				orderToSend,
 				{ withCredentials: true }
 			);
@@ -141,7 +141,7 @@ const OrdersPage = () => {
 				orderItems: updatedOrder.orderItems.map(({ tempId, ...item }) => item), // Remove tempId before sending
 			};
 			await axios.put(
-				`${process.env.REACT_APP_API_URL}/api/orders/${orderId}`,
+				`https://cpbackend.azurewebsites.net/api/clients/me/api/orders/${orderId}`,
 				orderToSend,
 				{ withCredentials: true }
 			);
@@ -154,7 +154,7 @@ const OrdersPage = () => {
 	const handleDeleteOrder = async (orderId) => {
 		try {
 			await axios.delete(
-				`${process.env.REACT_APP_API_URL}/api/orders/${orderId}`,
+				`https://cpbackend.azurewebsites.net/api/clients/me/api/orders/${orderId}`,
 				{
 					withCredentials: true,
 				}

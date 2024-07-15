@@ -6,13 +6,16 @@ const NavbarComponent = ({ isAuthenticated, client }) => {
 
 	const handleLogout = async () => {
 		try {
-			const response = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
+			const response = await fetch(
+				`https://cpbackend.azurewebsites.net/api/clients/me/logout`,
+				{
+					method: "POST",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
 			if (response.ok) {
 				navigate("/");
 				window.location.reload();

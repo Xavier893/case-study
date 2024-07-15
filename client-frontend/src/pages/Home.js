@@ -9,9 +9,12 @@ const HomePage = ({ isAuthenticated, client }) => {
 		const checkAuth = async () => {
 			try {
 				const response = await fetch(
-					`${process.env.REACT_APP_API_URL}/api/clients/me`,
+					`https://cpbackend.azurewebsites.net/api/clients/me`,
 					{
 						credentials: "include",
+						headers: {
+							"Content-Type": "application/json",
+						},
 					}
 				);
 				if (response.ok) {
