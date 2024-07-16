@@ -28,7 +28,7 @@ const NavbarComponent = ({ isAuthenticated, client }) => {
 	};
 
 	const handleLogin = () => {
-		navigate("/login");
+		window.location.href = "/oauth2/authorization/google";
 	};
 
 	return (

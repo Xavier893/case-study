@@ -12,9 +12,6 @@ const HomePage = ({ isAuthenticated, client }) => {
 					`https://cpbackend.azurewebsites.net/api/clients/me`,
 					{
 						credentials: "include",
-						headers: {
-							"Content-Type": "application/json",
-						},
 					}
 				);
 				if (response.ok) {

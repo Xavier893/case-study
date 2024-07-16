@@ -13,13 +13,13 @@ const ProductList = ({ isAuthenticated }) => {
 		const fetchClientAndProducts = async () => {
 			try {
 				const clientResponse = await axios.get(
-					`https://cpbackend.azurewebsites.net/api/clients/me/api/clients/me`,
+					`https://cpbackend.azurewebsites.net/api/clients/me/`,
 					{ withCredentials: true }
 				);
 				if (clientResponse.status === 200) {
 					setClient(clientResponse.data);
 					const productsResponse = await axios.get(
-						`https://cpbackend.azurewebsites.net/api/clients/me/api/products`
+						`https://cpbackend.azurewebsites.net/api/products`
 					);
 					const productsData = await productsResponse.data;
 					setProducts(productsData);
@@ -43,7 +43,7 @@ const ProductList = ({ isAuthenticated }) => {
 		try {
 			// Check if there is an existing order for the client
 			const ordersResponse = await axios.get(
-				`https://cpbackend.azurewebsites.net/api/clients/me/api/orders/client/${client.id}`,
+				`https://cpbackend.azurewebsites.net/api/orders/client/${client.id}`,
 				{ withCredentials: true }
 			);
 			const orders = ordersResponse.data;
@@ -68,7 +68,7 @@ const ProductList = ({ isAuthenticated }) => {
 				};
 
 				await axios.put(
-					`https://cpbackend.azurewebsites.net/api/clients/me/api/orders/${existingOrder.id}`,
+					`https://cpbackend.azurewebsites.net/api/orders/${existingOrder.id}`,
 					updatedOrder,
 					{ withCredentials: true }
 				);
@@ -84,7 +84,7 @@ const ProductList = ({ isAuthenticated }) => {
 				};
 
 				const response = await axios.post(
-					`https://cpbackend.azurewebsites.net/api/clients/me/api/orders`,
+					`https://cpbackend.azurewebsites.net/me/api/orders`,
 					newOrder,
 					{
 						withCredentials: true,
