@@ -1,6 +1,7 @@
 package com.xavier.client_backend.config;
 
 import com.xavier.client_backend.domain.entities.ClientEntity;
+import com.xavier.client_backend.filter.CorsFilter;
 import com.xavier.client_backend.repositories.ClientRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(new CorsFilter(), org.springframework.web.filter.CorsFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**", "/api/clients/me"))
                 .authorizeHttpRequests(auth -> {
@@ -59,7 +61,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://mango-plant-0dc82e003.5.azurestaticapps.net"));
+        configuration.setAllowedOrigins(Arrays.asList("https://mango-plant-0dc82e003.5.azurestaticapps.net"));
         configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
