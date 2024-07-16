@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const OrdersPage = () => {
-	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,19 +43,21 @@ const OrdersPage = () => {
 					console.log(ordersWithProducts); // Add this line to log the orders data
 				} else {
 					setIsAuthenticated(false);
-					navigate("/login");
+					window.location.href =
+						"https://cpbackend.azurewebsites.net/oauth2/authorization/google";
 				}
 			} catch (error) {
 				console.error("Error fetching client or orders:", error);
 				setIsAuthenticated(false);
-				navigate("/login");
+				window.location.href =
+					"https://cpbackend.azurewebsites.net/oauth2/authorization/google";
 			} finally {
 				setLoading(false);
 			}
 		};
 
 		fetchClientAndOrders();
-	}, [navigate]);
+	}, []);
 
 	const handleEditItem = (orderId, itemTempId) => {
 		setOrders((prevOrders) =>

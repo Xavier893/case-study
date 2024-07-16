@@ -6,7 +6,7 @@ import OrdersPage from "./pages/Orders";
 
 const Login = () => {
 	useEffect(() => {
-		window.location.href = `/oauth2/authorization/google`;
+		window.location.href = `https://cpbackend.azurewebsites.net/oauth2/authorization/google`;
 	}, []);
 	return <div>Redirecting to login...</div>;
 };

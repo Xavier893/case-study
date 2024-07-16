@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProductList = ({ isAuthenticated }) => {
@@ -7,7 +6,6 @@ const ProductList = ({ isAuthenticated }) => {
 	const [client, setClient] = useState(null);
 	const [showToast, setShowToast] = useState(false);
 	const [toastMessage, setToastMessage] = useState("");
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchClientAndProducts = async () => {
@@ -36,7 +34,9 @@ const ProductList = ({ isAuthenticated }) => {
 
 	const handleAddToOrder = async (productId, productName) => {
 		if (!isAuthenticated) {
-			navigate("/login");
+			window.location.href =
+				"https://cpbackend.azurewebsites.net/oauth2/authorization/google";
+
 			return;
 		}
 

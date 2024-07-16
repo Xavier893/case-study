@@ -7,7 +7,7 @@ const NavbarComponent = ({ isAuthenticated, client }) => {
 	const handleLogout = async () => {
 		try {
 			const response = await fetch(
-				`https://cpbackend.azurewebsites.net/api/clients/me/logout`,
+				`https://cpbackend.azurewebsites.net/logout`,
 				{
 					method: "POST",
 					credentials: "include",
@@ -28,7 +28,8 @@ const NavbarComponent = ({ isAuthenticated, client }) => {
 	};
 
 	const handleLogin = () => {
-		window.location.href = "/oauth2/authorization/google";
+		window.location.href =
+			"https://cpbackend.azurewebsites.net/oauth2/authorization/google";
 	};
 
 	return (
