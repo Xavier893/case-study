@@ -6,9 +6,12 @@ const ClientInfo = () => {
 
 	useEffect(() => {
 		axios
-			.get("${process.env.REACT_APP_API_URL}/api/clients/me", {
-				withCredentials: true,
-			})
+			.get(
+				"https://cpbackend.azurewebsites.net/api/clients/me/api/clients/me",
+				{
+					withCredentials: true,
+				}
+			)
 			.then((response) => {
 				setClient(response.data);
 			})

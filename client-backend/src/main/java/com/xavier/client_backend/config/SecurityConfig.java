@@ -33,10 +33,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults())
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**", "/api/clients/me"))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/products/**", "/", "/index.html", "/static/**",
-                            "/*.ico", "/*.json", "/*.png").permitAll();
+                            "/*.ico", "/*.json", "/*.png", "/api/clients/me").permitAll();
                     auth.requestMatchers("/api/orders/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
@@ -56,7 +56,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://mango-plant-0dc82e003.5.azurestaticapps.net/"));
         configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
@@ -80,7 +80,7 @@ public class SecurityConfig {
             }
 
             SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-            handler.setDefaultTargetUrl("http://localhost:3000");
+            handler.setDefaultTargetUrl("https://mango-plant-0dc82e003.5.azurestaticapps.net/");
             handler.onAuthenticationSuccess(request, response, authentication);
         };
     }

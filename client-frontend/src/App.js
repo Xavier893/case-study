@@ -6,7 +6,7 @@ import OrdersPage from "./pages/Orders";
 
 const Login = () => {
 	useEffect(() => {
-		window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
+		window.location.href = `https://cpbackend.azurewebsites.net/api/clients/me/oauth2/authorization/google`;
 	}, []);
 	return <div>Redirecting to login...</div>;
 };
@@ -25,7 +25,7 @@ const App = () => {
 		const checkAuth = async () => {
 			try {
 				const response = await fetch(
-					`${process.env.REACT_APP_API_URL}/api/clients/me`,
+					`https://cpbackend.azurewebsites.net/api/clients/me/api/clients/me`,
 					{
 						credentials: "include",
 					}
