@@ -17,19 +17,26 @@ public class ProductsInitializer {
     @Bean
     CommandLineRunner initProducts(ProductRepository productRepository) {
         return args -> {
-            List<ProductEntity> products = Arrays.asList(
-                    ProductEntity.builder().name("Controller").price(1199f).build(),
-                    ProductEntity.builder().name("Monitor").price(499f).build(),
-                    ProductEntity.builder().name("Keyboard").price(99f).build(),
-                    ProductEntity.builder().name("Mouse").price(49f).build(),
-                    ProductEntity.builder().name("Headset").price(149f).build(),
-                    ProductEntity.builder().name("Laptop").price(1299f).build(),
-                    ProductEntity.builder().name("Smartphone").price(999f).build(),
-                    ProductEntity.builder().name("Tablet").price(599f).build(),
-                    ProductEntity.builder().name("Smartwatch").price(199f).build(),
-                    ProductEntity.builder().name("Camera").price(699f).build()
-            );
-            productRepository.saveAll(products);
+            if (productRepository.count() == 0) {
+                List<ProductEntity> products = Arrays.asList(
+                        ProductEntity.builder().name("Smartphone").price(699.99).build(),
+                        ProductEntity.builder().name("Laptop").price(999.99).build(),
+                        ProductEntity.builder().name("Tablet").price(399.99).build(),
+                        ProductEntity.builder().name("Smartwatch").price(199.99).build(),
+                        ProductEntity.builder().name("Wireless Earbuds").price(149.99).build(),
+                        ProductEntity.builder().name("Gaming Console").price(499.99).build(),
+                        ProductEntity.builder().name("4K TV").price(799.99).build(),
+                        ProductEntity.builder().name("Bluetooth Speaker").price(99.99).build(),
+                        ProductEntity.builder().name("External Hard Drive").price(89.99).build(),
+                        ProductEntity.builder().name("Gaming Mouse").price(59.99).build(),
+                        ProductEntity.builder().name("Mechanical Keyboard").price(129.99).build(),
+                        ProductEntity.builder().name("Drone").price(299.99).build(),
+                        ProductEntity.builder().name("VR Headset").price(349.99).build(),
+                        ProductEntity.builder().name("Smart Home Hub").price(179.99).build(),
+                        ProductEntity.builder().name("Fitness Tracker").price(79.99).build()
+                );
+                productRepository.saveAll(products);
+            }
         };
     }
 }
