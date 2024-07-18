@@ -11,11 +11,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import java.util.Arrays;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -30,30 +32,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> {
-                CorsConfigurationSource source = request -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("https://mango-plant-0dc82e003.5.azurestaticapps.net"));
-                    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    configuration.setAllowedHeaders(List.of("*"));
-                    configuration.setAllowCredentials(true);
-                    return configuration;
-                };
-                cors.configurationSource(source);
-            })
-            .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/api/products/**").permitAll();
-                auth.anyRequest().authenticated();
-            })
-            .oauth2Login(oauth2 -> oauth2.successHandler(successHandler()))
-            .logout(logout -> logout
-                    .logoutUrl("/logout")
-                    .invalidateHttpSession(true)
-                    .clearAuthentication(true)
-                    .deleteCookies("JSESSIONID")
-                    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
-            );
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**"))
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/products/**", "/", "/index.html", "/static/**",
+                            "/*.ico", "/*.json", "/*.png").permitAll();
+                    auth.requestMatchers("/api/orders/**").authenticated();
+                    auth.anyRequest().authenticated();
+                })
+                .oauth2Login(oauth2 -> oauth2.successHandler(successHandler()))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
+                );
+
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("https://mango-plant-0dc82e003.5.azurestaticapps.net/"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
