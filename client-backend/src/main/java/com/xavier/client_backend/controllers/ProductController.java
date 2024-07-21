@@ -6,6 +6,7 @@ import com.xavier.client_backend.mappers.Mapper;
 import com.xavier.client_backend.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin("https://mango-plant-0dc82e003.5.azurestaticapps.net")
 @RequestMapping("/api/products")
 public class ProductController {
 

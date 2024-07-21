@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin("https://mango-plant-0dc82e003.5.azurestaticapps.net")
 @RequestMapping("/api/orders")
 public class OrderController {
 
@@ -31,7 +32,8 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public CompletableFuture<ResponseEntity<OrderDto>> updateOrder(@PathVariable Long orderId, @RequestBody OrderDto orderDto) {
+    public CompletableFuture<ResponseEntity<OrderDto>> updateOrder(@PathVariable Long orderId,
+            @RequestBody OrderDto orderDto) {
         OrderEntity updatedOrder = orderMapper.mapFrom(orderDto);
         return orderService.updateOrder(orderId, updatedOrder)
                 .thenApply(savedOrder -> ResponseEntity.ok(orderMapper.mapTo(savedOrder)));

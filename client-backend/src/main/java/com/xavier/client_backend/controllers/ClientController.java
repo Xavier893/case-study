@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin("https://mango-plant-0dc82e003.5.azurestaticapps.net")
 @RequestMapping("/api/clients")
 public class ClientController {
 

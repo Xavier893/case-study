@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(withDefaults())
+                .cors(corsConfigurationSource())
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/api/orders/**"))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/products/**", "/", "/index.html", "/static/**",
@@ -46,8 +46,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
-                );
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()));
 
         return http.build();
     }
